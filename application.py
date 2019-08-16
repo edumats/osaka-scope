@@ -59,7 +59,7 @@ def check():
     if request.method == 'GET':
         username = request.args.get('username')
         # Query database for username
-        query = db.execute('SELECT username FROM users WHERE username = :username', username=username)
+        query = db.execute('SELECT username FROM users WHERE username = :username', {"username": username})
 
         # If username is lenght > 1 and does not contain in users database, return true; otherwise, false
         if len(username) > 1 and not query:
@@ -87,7 +87,7 @@ def login():
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          username=request.form.get("username"))
+                          {"username":request.form.get("username")})
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
@@ -136,7 +136,7 @@ def register():
         if request.form.get("password") != request.form.get("confirmation"):
             return apology("passwords do not match", 400)
 
-        user = db.execute('SELECT username FROM users WHERE username=:username', username=request.form.get("username"))
+        user = db.execute('SELECT username FROM users WHERE username=:username', {"username":request.form.get("username")})
         if user:
             return apology('user already exists', 400)
 
@@ -144,7 +144,7 @@ def register():
 
         # Query database for username
         result = db.execute("INSERT INTO users(username, hash) VALUES(:username, :hash)",
-                            username=request.form.get("username"), hash=hash)
+                            {"username"=request.form.get("username"), "hash"=hash})
         if not result:
             return apology("user already exists", 200)
 
@@ -176,7 +176,7 @@ def settings():
 
         # Query database
         rows = db.execute("SELECT * FROM users WHERE id = :id",
-                          id=session["user_id"])
+                          {"id":session["user_id"]})
         print(rows)
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
@@ -186,7 +186,7 @@ def settings():
         hash = generate_password_hash(request.form.get("password_new"))
 
         # Update password
-        update = db.execute('UPDATE users SET hash = :hash WHERE id = :id', hash=hash, id=session["user_id"])
+        update = db.execute('UPDATE users SET hash = :hash WHERE id = :id', {"hash":hash, "id":session["user_id"]})
         if update:
             # Redirect user to home page
             flash("Password have successfully changed")
