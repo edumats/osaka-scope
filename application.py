@@ -145,7 +145,7 @@ def register():
 
         # Query database for username
         result = db.execute("INSERT INTO users(username, hash) VALUES(:username, :hash)",
-                            {"username"=username, "hash"=hash})
+                            {"username":username, "hash":hash})
         if not result:
             return apology("user already exists", 200)
 
