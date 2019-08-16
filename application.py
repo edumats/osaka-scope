@@ -1,5 +1,3 @@
-import os
-
 import psycopg2
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -36,7 +34,7 @@ Session(app)
 
 # database engine object from SQLAlchemy that manages connections to the database
 # DATABASE_URL is an environment variable that indicates where the database lives
-engine = create_engine(os.getenv("postgres://ciyhgcghdmlvvk:ff972a3b363002679b9a33dca4a0fcc5caf8b4095f03727de998c5f1dd58989a@ec2-54-221-201-212.compute-1.amazonaws.com:5432/ddsqmt6fvh3id5"))
+engine = create_engine("postgres://ciyhgcghdmlvvk:ff972a3b363002679b9a33dca4a0fcc5caf8b4095f03727de998c5f1dd58989a@ec2-54-221-201-212.compute-1.amazonaws.com:5432/ddsqmt6fvh3id5"))
 
 # create a 'scoped session' that ensures different users' interactions with the database are kept separate
 db = scoped_session(sessionmaker(bind=engine))
