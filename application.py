@@ -76,9 +76,9 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
+        username = request.form.get("username")
         # Ensure username was submitted
-        if not request.form.get("username"):
+        if not username:
             return apology("must provide username", 403)
 
         # Ensure password was submitted
@@ -87,7 +87,7 @@ def login():
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          {"username":request.form.get("username")})
+                          {"username":username})
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
@@ -125,8 +125,9 @@ def register():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
+        username = request.form.get('username')
         # Ensure username was submitted
-        if not request.form.get("username"):
+        if not username:
             return apology("must provide username", 400)
 
         # Ensure password was submitted
@@ -136,7 +137,7 @@ def register():
         if request.form.get("password") != request.form.get("confirmation"):
             return apology("passwords do not match", 400)
 
-        user = db.execute('SELECT username FROM users WHERE username=:username', {"username":request.form.get("username")})
+        user = db.execute('SELECT username FROM users WHERE username=:username', {"username":username})
         if user:
             return apology('user already exists', 400)
 
@@ -144,7 +145,7 @@ def register():
 
         # Query database for username
         result = db.execute("INSERT INTO users(username, hash) VALUES(:username, :hash)",
-                            {"username"=request.form.get("username"), "hash"=hash})
+                            {"username"=username, "hash"=hash})
         if not result:
             return apology("user already exists", 200)
 
@@ -164,6 +165,8 @@ def register():
 def settings():
     '''Manages users settings'''
     if request.method == 'POST':
+
+        id = session["user_id"]
         password = request.form.get("password")
         if not password:
             flash('You must provide the current password')
@@ -176,7 +179,7 @@ def settings():
 
         # Query database
         rows = db.execute("SELECT * FROM users WHERE id = :id",
-                          {"id":session["user_id"]})
+                          {"id":id})
         print(rows)
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
@@ -186,7 +189,7 @@ def settings():
         hash = generate_password_hash(request.form.get("password_new"))
 
         # Update password
-        update = db.execute('UPDATE users SET hash = :hash WHERE id = :id', {"hash":hash, "id":session["user_id"]})
+        update = db.execute('UPDATE users SET hash = :hash WHERE id = :id', {"hash":hash, "id":id})
         if update:
             # Redirect user to home page
             flash("Password have successfully changed")
