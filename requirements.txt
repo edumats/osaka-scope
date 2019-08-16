@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 cs50
 Flask
 Flask-Session
@@ -6,13 +5,3 @@ requests
 gunicorn
 psycopg2-binary
 passlib
-=======
-cs50
-Flask
-Flask-Session
-requests
-gunicorn
-psycopg2-binary
-passlib
->>>>>>> 36a1fe7dee3c60f9d1076bb41b24f827eaa964ad
-SQLAlchemy
