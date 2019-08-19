@@ -90,7 +90,7 @@ def login():
                           {"username":username})
 
         # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+        if not check_password_hash(rows[0]["hash"], request.form.get("password")):
             return apology("invalid username and/or password", 403)
 
         # Remember which user has logged in
@@ -148,6 +148,7 @@ def register():
                             {"username":username, "hash":hash})
         if not result:
             return apology("user already exists", 200)
+        db.commit()
 
         # Stores id returned by INSERT
         session["user_id"] = result
@@ -190,6 +191,7 @@ def settings():
 
         # Update password
         update = db.execute('UPDATE users SET hash = :hash WHERE id = :id', {"hash":hash, "id":id})
+        db.commit()
         if update:
             # Redirect user to home page
             flash("Password have successfully changed")
