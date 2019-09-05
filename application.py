@@ -16,7 +16,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Set up database
-engine = "postgres://ciyhgcghdmlvvk:ff972a3b363002679b9a33dca4a0fcc5caf8b4095f03727de998c5f1dd58989a@ec2-54-221-201-212.compute-1.amazonaws.com:5432/ddsqmt6fvh3id5"
+engine = create_engine(os.getenv("DATABASE_URL"),echo=True)
 db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
