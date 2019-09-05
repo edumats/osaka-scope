@@ -5,12 +5,8 @@ from flask import Flask, flash, session, request, redirect, render_template, ses
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-import requests
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
-
-res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "tazZgVasmaEMamfyYoS7Rg", "isbns": "9781632168146"})
-print(res.json())
 
 app = Flask(__name__)
 
