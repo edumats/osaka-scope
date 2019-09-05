@@ -1,5 +1,6 @@
 import os
 
+import psycopg2
 from flask import Flask, flash, session, request, redirect, render_template, session, url_for, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
