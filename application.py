@@ -14,17 +14,13 @@ print(res.json())
 
 app = Flask(__name__)
 
-# Check for environment variable
-if not os.getenv("DATABASE_URL"):
-    raise RuntimeError("DATABASE_URL is not set")
-
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Set up database
-engine = create_engine(os.getenv("DATABASE_URL"),echo=True)
+engine = "postgres://ciyhgcghdmlvvk:ff972a3b363002679b9a33dca4a0fcc5caf8b4095f03727de998c5f1dd58989a@ec2-54-221-201-212.compute-1.amazonaws.com:5432/ddsqmt6fvh3id5"
 db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
@@ -49,22 +45,22 @@ def login():
         # Check if username is provided
         if not username:
             return apology("please type a username", 400)
-        
+
         # Check if password is provided
         if not password:
             return apology("must provide password", 403)
-        
+
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
                           {"username":username}).fetchone()
-        
+
         if rows is not None and check_password_hash(rows.hash, password):
             session["user_id"] = rows.id
             return redirect("/")
-        
+
         flash('Wrong username or password')
         return redirect(url_for('login'))
-        
+
     else:
         return render_template("login.html")
 
@@ -87,7 +83,7 @@ def register():
 
     # Reached via POST method
     if request.method == "POST":
-        
+
         username = request.form.get("username")
 
         # Check if username is provided
@@ -97,11 +93,11 @@ def register():
         # Check if password is provided
         if not request.form.get("password"):
             return apology("please type a password", 400)
-        
+
         # Check if password matches in confirmation field
         if request.form.get("password") != request.form.get("confirmation"):
             return apology("passwords do not match", 400)
-        
+
         # Check if user exists in database
         user = db.execute('SELECT username FROM users WHERE username=:username', {"username":username}).fetchone()
         if user is not None:
