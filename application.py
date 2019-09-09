@@ -23,7 +23,8 @@ db = scoped_session(sessionmaker(bind=engine))
 @login_required
 def index():
     """ Main Page """
-    return render_template("index.html")
+    counter = db.execute(SELECT COUNT(counter) FROM sensor_data)
+    return render_template("index.html", counter=counter)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
