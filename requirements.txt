@@ -1,7 +1,8 @@
-cs50
+gunicorn
+psycopg2
 Flask
 Flask-Session
+psycopg2
+SQLAlchemy
 requests
-gunicorn
-psycopg2-binary
-passlib
+
