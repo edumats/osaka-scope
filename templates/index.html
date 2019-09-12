@@ -5,5 +5,22 @@
 {% endblock %}
 
 {% block main %}
-    Counter = {{ counter }}
+    <div id="tube-container">
+        <div class="tube-info">
+            <p class="font-weight-light">Total Views</p>
+            <p class="font-weight-bold">{{ counter }}</p>
+        </div>
+        <div class="tube-info">
+            <p class="font-weight-light">Today's Views</p>
+            <p class="font-weight-bold">{{ todayView }}</p>
+        </div>
+        <div class="tube-info">
+            <p class="font-weight-light">Last Viewed</p>
+            <p class="font-weight-bold">{{ lastView }}</p>
+        </div>
+        <div class="tube-info">
+            <p class="font-weight-light">Last View Time</p>
+            <p class="font-weight-bold">{{ lastViewHour }}</p>
+        </div>
+    </div>
 {% endblock %}
