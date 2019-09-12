@@ -6,7 +6,7 @@ from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import apology, login_required
+from helpers import login_required
 
 app = Flask(__name__)
 
@@ -52,22 +52,25 @@ def login():
 
         # Check if username is provided
         if not username:
-            return apology("please type a username", 400)
+            error = 'Please fill the username field'
+            return render_template("login.html", error=error)
 
         # Check if password is provided
         if not password:
-            return apology("must provide password", 403)
+            error = 'Please fill the password field'
+            return render_template("login.html", error=error)
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
                           {"username":username}).fetchone()
-
+        # Check if username is not present in database and if provided password is correct, if yes, logs and goes to index page
         if rows is not None and check_password_hash(rows.hash, password):
             session["user_id"] = rows.id
-            return redirect("/")
+            return redirect(url_for('index'))
 
-        flash('Wrong username or password')
-        return redirect(url_for('login'))
+        # If username/password check fails, return error message and redirects to login
+        error = 'Incorrect username or password'
+        return render_template("login.html", error=error)
 
     else:
         return render_template("login.html")
@@ -96,20 +99,24 @@ def register():
 
         # Check if username is provided
         if not username:
-            return apology("please type a username", 400)
+            error = 'Please fill the username field'
+            return render_template("register.html", error=error)
 
         # Check if password is provided
         if not request.form.get("password"):
-            return apology("please type a password", 400)
+            error = 'Please fill the password field'
+            return render_template("register.html", error=error)
 
         # Check if password matches in confirmation field
         if request.form.get("password") != request.form.get("confirmation"):
-            return apology("passwords do not match", 400)
+            error = 'Provided passwords do not match'
+            return render_template("register.html", error=error)
 
         # Check if user exists in database
         user = db.execute('SELECT username FROM users WHERE username=:username', {"username":username}).fetchone()
         if user is not None:
-            return apology("user already exists", 400)
+            error = 'Username already registered'
+            return render_template("register.html", error=error)
 
         # Create hash from password
         hash = generate_password_hash(request.form.get("password"))
