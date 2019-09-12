@@ -60,7 +60,7 @@ body {
 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows:18vh 18vh 18vh 18vh;
+    grid-template-rows: 18vh 18vh 18vh 17vh;
     grid-gap: 1rem;
 }
 

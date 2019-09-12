@@ -33,7 +33,7 @@ def index():
     lastViewHour = db.execute("SELECT TO_CHAR(date - INTERVAL '3 hour', 'HH24:MI') date_correct FROM sensor_data ORDER BY date DESC LIMIT 1").fetchone()
 
     # Returns today's number of views
-    todayView = db.execute("SELECT COUNT(counter) FROM sensor_data WHERE date = NOW()::date").fetchone()
+    todayView = db.execute("SELECT COUNT(counter) FROM sensor_data WHERE date >= NOW()::date").fetchone()
 
     return render_template("index.html", counter=counter[0], lastView=lastView[0], todayView=todayView[0], lastViewHour=lastViewHour[0])
 
