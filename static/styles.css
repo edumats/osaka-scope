@@ -71,6 +71,9 @@ body {
     justify-content: center;
     align-items: center;
     padding: 2rem;
+    -webkit-box-shadow: 9px 7px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 9px 7px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 9px 7px 5px 0px rgba(0,0,0,0.75);
 }
 
 .tube-info:nth-child(1) {
